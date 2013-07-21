@@ -1,0 +1,1715 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FreeSMTP.Net</name>
+    </assembly>
+    <members>
+        <member name="T:Quiksoft.FreeSMTP.EmailMessage">
+            <summary>
+            Provides properties and methods for constructing an e-mail message.</summary>
+            <remarks>
+            To send an e-mail message defined by an instance of this class, use the <see cref="T:Quiksoft.FreeSMTP.SMTP">SMTP class</see>. 
+            </remarks>
+            <seealso cref="T:Quiksoft.FreeSMTP.SMTP">SMTP Class</seealso>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.EmailMessage.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.EmailMessage">EMailMessage class</see>. 
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.EmailMessage.#ctor(System.String,System.String,System.String,System.String,Quiksoft.FreeSMTP.BodyPartFormat)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.EmailMessage">EMailMessage class</see> with the subject, recipient, sender, text and format of the message. 
+            </summary>
+            <param name="Subject">The subject of the message.</param>
+            <param name="RecipientEmail">The recipient's e-mail address.</param>
+            <param name="FromEmail">The sender's e-mail address.</param>
+            <param name="BodyText">The body text of the message.</param>
+            <param name="BodyFormat">One of the <see cref="T:Quiksoft.FreeSMTP.BodyPartFormat">BodyPartFormat</see> values specifying the format of the body part.</param>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.EmailMessage.Reset">
+            <summary>
+            Clears all existing members and collections.
+            </summary>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.EmailMessage.CharsetEncoding">
+            <summary>
+            Gets or sets the character encoding of the e-mail message.
+            </summary>
+            <value>One of the <see cref="T:Quiksoft.FreeSMTP.BodyPartEncoding"/> values that indicates the encoding type of the e-mail message.  Default: System.Text.Encoding.ASCII.</value>
+            <remarks>This property should be set for messages composed with character sets other than US-ASCII.  See the System.Text.Encoding class in the MSDN documentation for more information.</remarks>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.EmailMessage.CustomHeaders">
+            <summary>
+            Gets the <see cref="T:Quiksoft.FreeSMTP.CustomHeaderCollection">CustomHeaderCollection</see> object.
+            </summary>
+            <value>A <see cref="T:Quiksoft.FreeSMTP.CustomHeaderCollection"/> object.</value>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.EmailMessage.BodyParts">
+            <summary>
+            Gets the <see cref="T:Quiksoft.FreeSMTP.BodyPartCollection">BodyPartCollection</see> object.
+            </summary>
+            <value>A <see cref="T:Quiksoft.FreeSMTP.BodyPartCollection"/> object.</value>
+            <remarks>The FreeSMTP.Net assembly supports a maximum of one plain text body part and one HTML body part.  The retail version of Quiksoft's SMTP .Net assembly supports an unlimited number of body parts.</remarks>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.EmailMessage.Subject">
+            <summary>
+            Gets or sets the subject of the e-mail message..
+            </summary>
+            <value>The subject line of the e-mail message.</value>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.EmailMessage.Priority">
+            <summary>
+            Gets or sets the priority of the e-mail message..
+            </summary>
+            <value>The priority value.  See remarks.</value>
+            <remarks>Setting this property will cause an "X-Priority" header to be added to the message with the value specified.  Different mail readers may interpret the X-Priority setting differently. Some may not interpret it at all. The popular readers interpret "4"=low, "3"=normal and "1"=high.</remarks>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.EmailMessage.Recipients">
+            <summary>
+            Gets the <see cref="T:Quiksoft.FreeSMTP.RecipientCollection">RecipientCollection</see> object.
+            </summary>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.EmailMessage.Attachments">
+            <summary>
+            Gets the <see cref="T:Quiksoft.FreeSMTP.AttachmentCollection"/> object.
+            </summary>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.EmailMessage.From">
+            <summary>
+            Gets the <see cref="T:Quiksoft.FreeSMTP.Address"/> object specifying the sender of the message.
+            </summary>
+            <value>An <see cref="T:Quiksoft.FreeSMTP.Address"/> object.</value>
+            <remarks>The value specified by this property is used with the SMTP "MAIL FROM" command during the SMTP conversation. This command indicates to the SMTP host, the e-mail address of the message sender. Most mail servers will accept mail from anyone, however some mail servers will only accept mail from some senders.</remarks>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.SMTPStatus">
+            <summary>
+            Represents the method that will handle the <see cref="T:Quiksoft.FreeSMTP.SMTP">SMTPStatus</see> event of the SMTP Object.
+            </summary>
+            <param name="TotalSent">Total bytes sent for this message.</param>
+            <param name="TotalSize">Total size of this message in bytes.</param>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.SMTP">
+            <summary>
+            Provides properties and methods for sending messages using the SMTP protocol.
+            </summary>
+            <remarks>The SMTP object will send messages to an SMTP server or queue them for delivery by SMTPExpress.</remarks>
+        </member>
+        <member name="F:Quiksoft.FreeSMTP.SMTP.m_pStatus">
+            <summary>
+            Private Member
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.SMTP.QuickSend(System.String,System.String,System.String,System.String,System.String,Quiksoft.FreeSMTP.BodyPartFormat)">
+            <summary>
+            Sends an e-mail message without needing to create an object instance of the <see cref="T:Quiksoft.FreeSMTP.SMTP">SMTP class</see>.
+            </summary>
+            <param name="SMTPServerName">SMTP server name or address</param>
+            <param name="RecipientEmail">Recipient's e-mail address</param>
+            <param name="FromEmail">Sender's e-mail address</param>
+            <param name="Subject">Subject of the message</param>
+            <param name="BodyText">The text of the message body</param>
+            <param name="BodyFormat">One of the <see cref="T:Quiksoft.FreeSMTP.BodyPartFormat">BodyPartFormat</see> values specifying the format of the body part</param>
+            <exception cref="T:Quiksoft.FreeSMTP.FileIOException">Thrown when file cannot be read.</exception>
+            <exception cref="T:Quiksoft.FreeSMTP.SMTPProtocolException">Thrown when there is an SMTP protocol error.</exception>
+            <exception cref="T:Quiksoft.FreeSMTP.SMTPConnectionException">Thrown when a connection error occurs.</exception>
+            <example>SMTP.QuickSend("mail.domain.com", "webmaster@localhost","jdoe@quiksoft.com", "My Subject", "Hello how are you?", BodyPartFormat.Plain);</example>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.SMTP.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.SMTP">SMTP class</see> with the SMTP mail server name or address.
+            </summary>
+            <param name="SMTPServerName">Name or address of the SMTP server</param>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.SMTP.Reset">
+            <summary>
+            Clears all existing members and collections.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.SMTP.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.SMTP">SMTP class</see>.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.SMTP.SubmitToExpress(Quiksoft.FreeSMTP.EmailMessage,System.String)">
+            <summary>
+            The SubmitToExpress method queues an e-mail message for delivery by SMTPExpress.
+            </summary>
+            <param name="MessageObj">A reference to the <see cref="T:Quiksoft.FreeSMTP.EmailMessage">EMailMessage</see> object to queue</param>
+            <param name="SMTPExpressPath">The path to the Easymail SMTPExpress directory on the computer where EasyMailSMTP Express is installed.</param>
+            <exception cref="T:Quiksoft.FreeSMTP.FileIOException">Thrown when a file cannot be written to or read from.</exception>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.SMTP.Send(Quiksoft.FreeSMTP.EmailMessage)">
+            <summary>
+            Sends an e-mail message to an SMTP server.
+            </summary>
+            <param name="MessageObj">A reference to the <see cref="T:Quiksoft.FreeSMTP.EmailMessage">EMailMessage</see> object to send</param>
+            <exception cref="T:Quiksoft.FreeSMTP.FileIOException">Thrown when file cannot be read.</exception>
+            <exception cref="T:Quiksoft.FreeSMTP.SMTPProtocolException">Thrown when there is an SMTP protocol error.</exception>
+            <exception cref="T:Quiksoft.FreeSMTP.SMTPConnectionException">Thrown when a connection error occurs.</exception>
+        </member>
+        <member name="E:Quiksoft.FreeSMTP.SMTP.SMTPStatus">
+            <summary>
+             Adds or removes a <see cref="E:Quiksoft.FreeSMTP.SMTP.SMTPStatus">SMTPStatus</see> delegate that is called with progress data as an e-mail message is being sent.
+            </summary>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.SMTP.SMTPServers">
+            <summary>
+            Gets the <see cref="T:Quiksoft.FreeSMTP.SMTPServerCollection">SMTPServerCollection</see> object.
+            </summary>
+            <value>The <see cref="T:Quiksoft.FreeSMTP.SMTPServerCollection"/> object</value>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.SMTP.LogFile">
+            <summary>
+            Get or sets the path and filename of log file to output all transactions with the server.
+            </summary>
+            <remarks>Path to log file must already exist. The file will be created if it does not already exist, otherwise it will be appended to.</remarks>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.Collection">
+            <summary>
+            Summary description for Collection.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.Collection.pArray">
+            <summary>
+            Array that actually holds the collection objects
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.Collection.Position">
+            <summary>
+            Position at which collection is refferencing
+            </summary>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Collection.GetEnumerator">
+            <summary>
+            Returns the enumerator.
+            </summary>
+            <returns>Object</returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Collection.MoveNext">
+            <summary>
+            Moves to next record
+            </summary>
+            <returns>true on success false if no more records</returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Collection.Reset">
+            <summary>
+            Resets collection to first object
+            </summary>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Collection.GetLastItem">
+            <summary>
+            Return the last item in the collection
+            </summary>
+            <returns>Address object</returns>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.Collection.Current">
+            <summary>
+            Returns current object
+            </summary>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.Collection.Count">
+            <summary>
+            Get number of items in collection
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.CancelException">
+            <summary>
+            Thrown when the cancel method is called.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.ParseException">
+            <summary>
+            Thrown when the cancel method is called.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.ProtocolException">
+            <summary>
+            Exception related to the Specific Protocol.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.ISMTPSSL">
+            <summary>
+            Internal Interface that should be ignored.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.ISMTPSSL.recv(System.String@,System.Int32)">
+            <summary>
+            Internal Interface that should be ignored.
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.ISMTPSSL.send(System.String,System.Boolean)">
+            <summary>
+            Internal Interface that should be ignored.
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.ISMTPSSL.send(System.String,System.Boolean,System.Text.Encoding)">
+            <summary>
+            Internal Interface that should be ignored.
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <param name="c"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.ISMTPSSL.send(System.Byte[],System.Int32)">
+            <summary>
+            Internal Interface that should be ignored.
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.ISMTPSSL.Flush">
+            <summary>
+            Internal Interface that should be ignored.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.ISMTPSSL.Close">
+            <summary>
+            Internal Interface that should be ignored.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.ISMTPSSL.connect(System.String,System.Int32)">
+            <summary>
+            Internal Interface that should be ignored.
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.ISMTPSSL.GetTimeoutValue">
+            <summary>
+            Internal Interface that should be ignored.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.ISMTPSSL.SetWriteToLog(System.Object)">
+            <summary>
+            Internal Interface that should be ignored.
+            </summary>
+            <param name="a"></param>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.ISMTPSSL.SetTimeoutValue(System.Int32)">
+            <summary>
+            Internal Interface that should be ignored.
+            </summary>
+            <param name="a"></param>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.ISMTPSSL.Shutdown(System.Net.Sockets.SocketShutdown)">
+            <summary>
+            Internal Interface that should be ignored.
+            </summary>
+            <param name="a"></param>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.ISMTPSSL.Receive(System.Byte[],System.Int32,System.Net.Sockets.SocketFlags)">
+            <summary>
+            Internal Interface that should be ignored.
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <param name="c"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.ISMTPSSL.IsConnected">
+            <summary>
+            Internal Interface that should be ignored.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.emSocket">
+            <summary>
+            Quiksoft Socket Class.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.emSocket.BUFFER_SIZE">
+            <summary>
+            Size of buffers to use.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.emSocket.m_pWriteToLog">
+            <summary>
+            Allows class to write to a log file.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.emSocket.m_pNetStream">
+            <summary>
+            Holds the network stream.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.emSocket.Flush">
+            <summary>
+            Clears out stream buffers.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.emSocket.SetTimeoutValue(System.Int32)">
+            <summary>
+            Sets the timeout value of the socket.
+            </summary>
+            <param name="m_nMilliseconds">Millisecond timeout value</param>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.emSocket.recv(System.String@,System.Int32)">
+            <summary>
+            Recieves one SMTP line of data from the socket.  
+            </summary>
+            <param name="strData">Data recievd</param>
+            <param name="nBufferSize">Max size to recieve</param>
+            <returns>0 on success</returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.emSocket.Quiksoft#EasyMail#Internal#ISMTPSSL#Close">
+            <summary>
+            Quiksoft Socket Class.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.emSocket.Quiksoft#EasyMail#Internal#ISMTPSSL#Shutdown(System.Net.Sockets.SocketShutdown)">
+            <summary>
+            Quiksoft Socket Class.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.emSocket.Quiksoft#EasyMail#Internal#ISMTPSSL#Receive(System.Byte[],System.Int32,System.Net.Sockets.SocketFlags)">
+            <summary>
+            Quiksoft Socket Class.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.Encoder">
+            <summary>
+            Summary description for Encoder.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Encoder.ToBase64Wrap(System.String,Quiksoft.EasyMail.Internal.ISMTPSSL,Quiksoft.EasyMail.Internal.SMTP.Status,System.Int64@,System.Int64,System.Text.Encoding)">
+            <summary>
+            Converts a unicode string to Base64.
+            IT wraps the lines at 75 characters.
+            </summary>
+            <param name="strData">Data to encode</param>
+            <param name="pIOControl">Stream object to write to.</param>
+            <param name="pStatus"></param>
+            <param name="nBytesSent"></param>
+            <param name="nTotalBytes"></param>
+            <param name="CharsetEncoding"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Encoder.QuotedCharacter(System.Int32)">
+            <summary>
+            Converts a character to its quoted-printable equivilent
+            </summary>
+            <param name="pChar">Character to convert</param>
+            <returns>return equal sign plus character code with 2 decimal digits.</returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Encoder.SendBase64File(System.String,Quiksoft.EasyMail.Internal.ISMTPSSL,Quiksoft.EasyMail.Internal.SMTP.Status,System.Int64@,System.Int64)">
+            <summary>
+            Base 64 encodes a file and wraps at 75 characters.
+            Sends output to io stream.
+            </summary>
+            <param name="strFile">File Name to Send</param>
+            <param name="pIOControl">Stream Object</param>
+            <param name="pStatus"></param>
+            <param name="nBytesSent"></param>
+            <param name="nTotalBytes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Encoder.WrapIt(System.String,System.Int32,System.Boolean)">
+            <summary>
+            Function to allow word wrap
+            </summary>
+            <param name="varString">Strin to wrap</param>
+            <param name="varNumChar">Number of characters to wrap at.</param>
+            <param name="boolBreak">Force break at same character disregard for word.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.MemoryWrite">
+            <summary>
+            Used to write a message to memory.
+            Uses StringBuilder for better perofrmance
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.IO_TYPE">
+            <summary>
+            Type of IO objects currently supported.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.Message">
+            <summary>
+            Message Object, stores all message information.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Message.SaveMessage(System.IO.Stream)">
+            <summary>
+            Save message to file stream.
+            </summary>
+            <param name="pFileStream">File Stream</param>
+            <returns></returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Message.SendBody(Quiksoft.EasyMail.Internal.ISMTPSSL,Quiksoft.EasyMail.Internal.SMTP.Status,System.Int64@,System.Int64)">
+            <summary>
+            Writes the body of the message to a stream.
+            </summary>
+            <param name="pIOControl"></param>
+            <param name="pStatus"></param>
+            <param name="nBytesSent"></param>
+            <param name="nTotalBytes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Message.SendAttachment(Quiksoft.EasyMail.Internal.Attachment,Quiksoft.EasyMail.Internal.ISMTPSSL,Quiksoft.EasyMail.Internal.SMTP.Status,System.Int64@,System.Int64,System.Text.Encoding)">
+            <summary>
+            Writes attachment to stream doing any necessary encoding.
+            </summary>
+            <param name="pAttachment">Attachment to write</param>
+            <param name="pIOControl">Stream</param>
+            <param name="pStatus"></param>
+            <param name="nBytesSent"></param>
+            <param name="nTotalBytes"></param>
+            <param name="CharsetEncoding"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Message.SendBodyPart(Quiksoft.EasyMail.Internal.BodyPart,Quiksoft.EasyMail.Internal.ISMTPSSL,Quiksoft.EasyMail.Internal.SMTP.Status,System.Int64@,System.Int64)">
+            <summary>
+            Write encoded bodypart to a stream.
+            </summary>
+            <param name="pPart">Part to write</param>
+            <param name="pIOControl">Stream</param>
+            <param name="pStatus"></param>
+            <param name="nBytesSent"></param>
+            <param name="nTotalBytes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Message.SendHeaders(Quiksoft.EasyMail.Internal.ISMTPSSL,Quiksoft.EasyMail.Internal.SMTP.SMTP_SEND_PARAMS)">
+            <summary>
+            Sends the header to a socket or file
+            </summary>
+            <param name="pIOControl">IO stream to send to</param>
+            <param name="pParams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Message.GetAttachmentCount(System.Int32@)">
+            <summary>
+            Returns the number of attachments a message has.
+            </summary>
+            <param name="nNonRelatedCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Message.SendAddresses(Quiksoft.EasyMail.Internal.Addresses,Quiksoft.EasyMail.Internal.ISMTPSSL,Quiksoft.EasyMail.Internal.AddressType,System.Text.Encoding)">
+            <summary>
+            Used to save or send an address.
+            </summary>
+            <param name="pAddresses">Address Object</param>
+            <param name="pIOControl">IO Control object</param>
+            <param name="nType">Type of address to use</param>
+            <param name="CharsetEncoding"></param>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.Message.BodyParts">
+            <summary>
+            Collection of body parts.
+            </summary>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.Message.From">
+            <summary>
+            Collection of senders.  Normally only one is used.
+            </summary>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.Message.Recipients">
+            <summary>
+            Recipients, To, CC, and BCC's
+            </summary>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.Message.Attachments">
+            <summary>
+            Collection of ATtachment Objects.
+            </summary>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.Message.Priority">
+            <summary>
+            Priority of message.
+            </summary>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.Message.CustomHeaders">
+            <summary>
+            Custom headers, should end with a CRLF
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.Message.HeaderOptions">
+            <summary>
+            Set the options that the SMTP Object should use when creating messages.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.Message.HeaderOptions.None">
+            <summary>
+            No options.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.Message.HeaderOptions.NoFrom">
+            <summary>
+            Do not add "From" header.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.Message.HeaderOptions.NoDate">
+            <summary>
+            Do not add "Date" header.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.Message.HeaderOptions.NoMessageID">
+            <summary>
+            Do not add "Message-ID" header.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.Message.HeaderOptions.NoRecipients">
+            <summary>
+            Do not add "To" header.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.Message.HeaderOptions.NoAuthInFrom">
+            <summary>
+            When this option is specified along with ESMTP authentication, the authentication account name will not be appended to the end of the MAIL FROM command. This option is to be used for servers which reject the MAIL FROM command when the authentication account name is appended.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.Message.HeaderOptions.AddBCC">
+            <summary>
+            Add the BCC header to the message.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.AddressType">
+            <summary>
+            Type of Address
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.AddressType.To">
+            <summary>
+            Standard To
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.AddressType.CC">
+            <summary>
+            Carbon copy.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.AddressType.BCC">
+            <summary>
+            Blind Carbon Copy
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.AddressType.From">
+            <summary>
+            Address is a From address
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.Recipients">
+            <summary>
+            Recipients collection object
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.Addresses">
+            <summary>
+            Addresses collection.  Holds multiple addresses
+            </summary>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Addresses.Add(Quiksoft.EasyMail.Internal.Address)">
+            <summary>
+            Add an address to the collection
+            </summary>
+            <param name="pAddress"></param>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Addresses.GetLastItem(Quiksoft.EasyMail.Internal.AddressType)">
+            <summary>
+            Returns the last item in the collection that is of a certain type.
+            </summary>
+            <param name="nType">Type of address to return</param>
+            <returns>Address object</returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Recipients.Add(System.String,System.String,Quiksoft.EasyMail.Internal.AddressType)">
+            <summary>
+            Add Address to collection
+            </summary>
+            <param name="strAddress">e-mail Address</param>
+            <param name="strName">Friendly Name</param>
+            <param name="nType">Type</param>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Recipients.Add(System.String,Quiksoft.EasyMail.Internal.AddressType)">
+            <summary>
+            Adds an address to the collection
+            </summary>
+            <param name="strAddress">e-mail Address</param>
+            <param name="nType">Type</param>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.Senders">
+            <summary>
+            Sender or FROM collection Object
+            </summary>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Senders.Add(System.String)">
+            <summary>
+            Adds an email address to the collection
+            </summary>
+            <param name="strEMailAddress">e-mail Address</param>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Senders.Add(System.String,System.String)">
+            <summary>
+            Adds and E-mail address to the collection
+            </summary>
+            <param name="strEMailAddress">E-Mail Address</param>
+            <param name="strName">Friendly Name</param>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.Address">
+            <summary>
+            Address object.  Used to store e-mail addresses.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Address.#ctor(System.String,System.String,Quiksoft.EasyMail.Internal.AddressType)">
+            <summary>
+            Constructor that creates Address class.
+            </summary>
+            <param name="strAddress">Email Address</param>
+            <param name="strName">User name</param>
+            <param name="nType">Type of Address</param>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.Address.m_strAddress">
+            <summary>
+            Email Address member string
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.Address.m_strName">
+            <summary>
+            Email Name
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.Address.m_nType">
+            <summary>
+            Type of Address
+            </summary>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.Address.EmailAddress">
+            <summary>
+            Email Address Property
+            </summary>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.Address.Name">
+            <summary>
+            Email Friendly Name property
+            </summary>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.Address.Type">
+            <summary>
+            Type of address. property
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.Attachments">
+            <summary>
+            Attachments collection stores attachment objects.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.Attachments.Add(Quiksoft.EasyMail.Internal.Attachment)">
+            <summary>
+            Adds attachment object to collection
+            </summary>
+            <param name="pAttachment">Attachment Object</param>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.Attachment">
+            <summary>
+            Attachment Class
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.MimePart">
+            <summary>
+            Mime Part boject
+            </summary>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.MimePart.Encoding">
+            <summary>
+            Encoding type to use
+            </summary>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.MimePart.Options">
+            <summary>
+            MimePart Options
+            </summary>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.MimePart.Headers">
+            <summary>
+            Custom headers to add to MIME part. Must end in CRLF.
+            </summary>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.MimePart.Data">
+            <summary>
+            Data of message or FileName.
+            </summary>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.MimePart.ContentType">
+            <summary>
+            Content Type of part
+            </summary>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.MimePart.Length">
+            <summary>
+            Length of part.  Read only
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.Attachment.m_strName">
+            <summary>
+            Friendly Attachment Name
+            </summary>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.Attachment.Data">
+            <summary>
+            Attachment data or file name.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.BodyParts">
+            <summary>
+            Body Parts collection.  Contains all parts of the message.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.BodyParts.Add(Quiksoft.EasyMail.Internal.BodyPart)">
+            <summary>
+            Adds a body part to the collection
+            </summary>
+            <param name="pPart">Body Part object</param>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.BodyParts.Add(System.String)">
+            <summary>
+            Adds a body part to the collection
+            </summary>
+            <param name="Body">Bodypart text.</param>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.MIMEEncoding">
+            <summary>
+            Mime encoding used on Mime entity.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.MIMEEncoding.None">
+            <summary>
+            No encoding used
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.MIMEEncoding.Base64">
+            <summary>
+            Use Base64
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.MIMEEncoding.QuotedPrintable">
+            <summary>
+            Use Quoted Printable
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.BodyPart">
+            <summary>
+            Body Part object
+            </summary>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.BodyPart.CharsetEncoding">
+            <summary>
+            Charset used.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.SMTPProtocolException">
+            <summary>
+            Exception related to the Specific Protocol.
+            </summary>
+            
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.SMTPConnectionException">
+            <summary>
+            Exception related to the socket connection.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.SMTPFileIOException">
+            <summary>
+            Exception related to the file system.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.SMTPCancelException">
+            <summary>
+            Thrown when the cancel method is called.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.SMTP.SMTP_STATUS_FLAGS">
+            <summary>
+            Enumerator that shows the type of callback that was made.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_STATUS_FLAGS.SMTP_PROGRESS_CALLBACK">
+            <summary>
+            Progress of message being sent
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_STATUS_FLAGS.SMTP_RECIPIENTS_CALLBACK">
+            <summary>
+            A recipient had been rejected
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_STATUS_FLAGS.SMTP_MESSAGEID_CALLBACK">
+            <summary>
+            The message ID was created.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.SMTP.Status">
+            <summary>
+            Callback function definition.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.SMTP.SMTP_DSN_NOTIFYFLAGS">
+            <summary>
+            Flags that can be set for ESMTP DSN
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_DSN_NOTIFYFLAGS.SMTP_NOTIFYFLAGS_NONE">
+            <summary>
+            Default, do not send command to server.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_DSN_NOTIFYFLAGS.SMTP_NOTIFYFLAGS_DEFAULT">
+            <summary>
+            Send the command but do what ever the server default is.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_DSN_NOTIFYFLAGS.SMTP_NOTIFYFLAGS_FAILURE">
+            <summary>
+            Notify if message fails.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_DSN_NOTIFYFLAGS.SMTP_NOTIFYFLAGS_SUCCESS">
+            <summary>
+            Notify if message is sent succefully.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_DSN_NOTIFYFLAGS.SMTP_NOTIFYFLAGS_DELAY">
+            <summary>
+            Notify if message is delayed.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_DSN_NOTIFYFLAGS.SMTP_NOTIFYFLAGS_NEVER">
+            <summary>
+            Do not notify me.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.SMTP.SMTP_DSN_RETURNFLAGS">
+            <summary>
+            Flags that can be set when using DSN to requiest what the server should return on failure.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_DSN_RETURNFLAGS.SMTP_RETURNFLAGS_NONE">
+            <summary>
+            Do not send command
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_DSN_RETURNFLAGS.SMTP_RETURNFLAGS_DEFAULT">
+            <summary>
+            Return what ever the server default is.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_DSN_RETURNFLAGS.SMTP_RETURNFLAGS_HEADER">
+            <summary>
+            Return only the header of the message.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_DSN_RETURNFLAGS.SMTP_RETURNFLAGS_MESSAGE">
+            <summary>
+            Return the full message.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.SMTP.SMTPMIMEFlags">
+            <summary>
+            Flasg that can be set for each MIME part.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTPMIMEFlags.None">
+            <summary>
+            No Flags
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTPMIMEFlags.NoContentType">
+            <summary>
+            Do not add content type header
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTPMIMEFlags.NO_CONTRANS_ENC">
+            <summary>
+            Do not add content transfer encoding header
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTPMIMEFlags.NO_DISPOSITION">
+            <summary>
+            Do not add the disposition headers
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTPMIMEFlags.NO_DESCRIPTION">
+            <summary>
+            Do not add the description header
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTPMIMEFlags.GENERIC_CONTENT_TYPE">
+            <summary>
+            Use generic content type application/octet-stream
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTPMIMEFlags.PartOfMessage">
+            <summary>
+            Part of the message, html image etc..
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTPMIMEFlags.TypeFile">
+            <summary>
+            DATA is a file name.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.SMTP.SMTP_SEND_PARAMS">
+            <summary>
+            Parameters that should be sent to the send method.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_SEND_PARAMS.DSN_ID">
+            <summary>
+            DSN ID as used in returned messages.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_SEND_PARAMS.DSN_NotifyFlags">
+            <summary>
+            Flags that say when we want to be notified.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_SEND_PARAMS.DSN_ReturnFlags">
+            <summary>
+            Flags that say what we want returned.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_SEND_PARAMS.ESMTP_Pipelining">
+            <summary>
+            Says if we want to use pipelining or not.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_SEND_PARAMS.pStatusCallback">
+            <summary>
+            Call back of status data.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_SEND_PARAMS.pUserData">
+            <summary>
+            User data sent back to callback.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP_SEND_PARAMS.Options">
+            <summary>
+            Sending Options
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.SMTP.AUTH_MODE">
+            <summary>
+            Set the type of ESMTP Authentication to use.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.AUTH_MODE.SMTP_AUTH_NONE">
+            <summary>
+            Do not use Authentication
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.AUTH_MODE.SMTP_AUTH_LOGIN">
+            <summary>
+            Use AUTH Login
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.AUTH_MODE.SMTP_AUTH_CRAMMD5">
+            <summary>
+            Use Cram MD5. Not yet implemented.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.SMTP.SMTPImportHTMLFlags">
+            <summary>
+            Flags to use when importing HTML using the ImportHTML method.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTPImportHTMLFlags.None">
+            <summary>
+            None
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTPImportHTMLFlags.CreateAlternative">
+            <summary>
+            Crate an alternative text representation.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.SMTP.SMTP">
+            <summary>
+            Summary description for SMTP.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP.BUFFER_SIZE">
+            <summary>
+            Buffer size of strings
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP.MIME_WARNING">
+            <summary>
+            Options
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP.pSocket">
+            <summary>
+            Socket class
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP.m_bAuthLogin">
+            <summary>
+            Set when AUTH Login was used to authenticate
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP.m_bESMTP">
+            <summary>
+            Set when server support ESMTP and EHLO command was sent
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP.m_bSupportsPipelining">
+            <summary>
+            Set when the server is able to use piplining.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP.m_strLogFile">
+            <summary>
+            Log file to write log to.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP.m_pFileStream">
+            <summary>
+            Log file stream.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.EasyMail.Internal.SMTP.SMTP.m_pStreamWriter">
+            <summary>
+            Log file stream writer.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.SMTP.SMTP.WriteToLog(System.String)">
+            <summary>
+            Writes a string to the log file.
+            </summary>
+            <param name="strData">Data to write to log file.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.SMTP.SMTP.Connect(System.String,System.Int32,System.String,System.Int32)">
+            <summary>
+            Connects to an SMTP server.
+            </summary>
+            <param name="strServer">Server Name</param>
+            <param name="nPort">Port number to connect to. Default is 25.</param>
+            <param name="strDomain">Domain name to send to HELO or EHLO command.</param>
+            <param name="nOptions">Options that can be set.</param>
+            <returns>returns 0 on success or -1 on error.</returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.SMTP.SMTP.CloseConnection">
+            <summary>
+            Disconnect for mail server.
+            </summary>
+            <returns>0</returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.SMTP.SMTP.Dispose">
+            <summary>
+            Closes resources
+            </summary>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.SMTP.SMTP.Disconnect">
+            <summary>
+            Disconnect from mail server
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.SMTP.SMTP.SendMessage(Quiksoft.EasyMail.Internal.Message,System.Int32,Quiksoft.EasyMail.Internal.SMTP.SMTP_SEND_PARAMS)">
+            <summary>
+            Send message to mail server. Must connect first.
+            </summary>
+            <param name="pMessage">Message to send</param>
+            <param name="nOptions">Options</param>
+            <param name="pParams">Send parameters</param>
+            <returns>0</returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.SMTP.SMTP.SendSMTPCommand(System.String)">
+            <summary>
+            Sends SMTP command to server and returns response.
+            </summary>
+            <param name="strCommand">Command to send</param>
+            <returns>Response</returns>
+        </member>
+        <member name="M:Quiksoft.EasyMail.Internal.SMTP.SMTP.SendSMTPCommand(System.String,System.Boolean)">
+            <summary>
+            Sends SMTP command to server and returns response
+            </summary>
+            <param name="strCommand">Command to send</param>
+            <param name="bPipeline">If pipeline then do not recevie.</param>
+            <returns>Response</returns>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.SMTP.SMTP.Timeout">
+            <summary>
+            Set the time we should wait for a socket to connect, receive and send data before timing out.
+            </summary>
+        </member>
+        <member name="P:Quiksoft.EasyMail.Internal.SMTP.SMTP.LogFile">
+            <summary>
+            File to write status to
+            </summary>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.RecipientType">
+            <summary>
+            Provides enumerated values for the recipient type.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.FreeSMTP.RecipientType.To">
+            <summary>
+            Standard to address.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.FreeSMTP.RecipientType.CC">
+            <summary>
+            Carbon copy.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.FreeSMTP.RecipientType.BCC">
+            <summary>
+            Blind carbon copy
+            </summary>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.SMTPServer">
+            <summary>
+            Provides properties and methods for an SMTP mail server that will be used when sending e-mail messages.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.SMTPServer.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.SMTPServer">SMTPServer class</see> with the name, port number and timeout value for the SMTP server.
+            </summary>
+            <param name="Name">Name or address of server</param>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.SMTPServer.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.SMTPServer">SMTPServer Class</see>
+            </summary>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.SMTPServer.Name">
+            <summary>
+            Gets or sets the name or address of the SMTP server.
+            </summary>
+            <value>Name or address of the SMTP server</value>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.SMTPServerCollection">
+            <summary>
+            Represents a collection of <see cref="T:Quiksoft.FreeSMTP.SMTPServer">SMTPServer</see> objects.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.Collection">
+            <summary>
+            An abstract class for a strongly typed collection.
+            </summary>
+            <remarks>This class is abstract.  It is inherited by the other collection classes and can not be instantiated directly.</remarks>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.Collection.#ctor">
+            <summary>
+            Initializes a new instance of the Collection class.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.FreeSMTP.Collection.pArray">
+            <summary>
+            Array that actually holds the collection objects
+            </summary>
+        </member>
+        <member name="F:Quiksoft.FreeSMTP.Collection.Position">
+            <summary>
+            Position at which collection is referencing
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.Collection.GetEnumerator">
+            <summary>
+            Returns the enumerator.
+            </summary>
+            <returns>Object</returns>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.Collection.MoveNext">
+            <summary>
+            Moves to the next record.
+            </summary>
+            <returns>Returns true on success false if no more records are available.</returns>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.Collection.Remove(System.Object)">
+            <summary>
+            Removes the first occurrence of a specific object from the collection.
+            </summary>
+            <param name="Obj">The object to remove from the collection.</param>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.Collection.Reset">
+            <summary>
+            Resets the index of the collection to the first object.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.Collection.GetLastItem">
+            <summary>
+            Return the last item in the collection.
+            </summary>
+            <returns>A reference to the last object in the collection.</returns>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.Collection.Current">
+            <summary>
+            Returns current object
+            </summary>
+            <value>Current object in the collection</value>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.Collection.Count">
+            <summary>
+            Gets the number of items in collection.
+            </summary>
+            <value>Number of items in the collection</value>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.SMTPServerCollection.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.SMTPServerCollection">SMTPServerCollection class</see> 
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.SMTPServerCollection.Add(System.String)">
+            <summary>
+            Creates and adds a <see cref="T:Quiksoft.FreeSMTP.SMTPServer">SMTPServer object</see> to the collection.
+            </summary>
+            <param name="Name">Specifies the hostname or IP address of the SMTP server.</param>
+            <remarks>The FreeSMTP.Net assembly supports a maximum of one mail server.  The retail version of Quiksoft's SMTP .Net assembly supports an unlimited number of SMTP servers.</remarks>
+            <exception cref="T:Quiksoft.FreeSMTP.LimitationException">Throws LimitationException if more then one mail server is added.</exception>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.SMTPServerCollection.Add(Quiksoft.FreeSMTP.SMTPServer)">
+            <summary>
+            Adds a <see cref="T:Quiksoft.FreeSMTP.SMTPServer">SMTPServer object</see> to the collection.
+            </summary>
+            <remarks>Free SMTP component can only have one SMTP server specified.</remarks>
+            <param name="SMTPServerObj">A reference to an <see cref="T:Quiksoft.FreeSMTP.SMTPServer"/> object to add to the collection.</param>
+            <exception cref="T:Quiksoft.FreeSMTP.LimitationException">Throws LimitationException if more then one mail server is added.</exception>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.Address">
+            <summary>
+            Provides properties and methods for constructing an e-mail Address.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.Address.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.Address">Address class</see> with an e-mail address and name.
+            </summary>
+            <param name="Email">The e-mail address.  i.e. j.doe@domain.com</param>
+            <param name="Name">The name of the addressee.  i.e. John Doe</param>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.Address.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.Address">Address class</see> with an e-mail address.
+            </summary>
+            <param name="Email">The e-mail address.  i.e. j.doe@domain.com</param>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.Address.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.Address">Address class</see>
+            </summary>
+        </member>
+        <member name="F:Quiksoft.FreeSMTP.Address.strAddress">
+            <summary>
+            Member variable that holds the e-mail Address.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.FreeSMTP.Address.strName">
+            <summary>
+            Holds that 
+            </summary>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.Address.Email">
+            <summary>
+            Gets and sets the e-mail address.
+            </summary>
+            <value>The e-mail address.  i.e. j.doe@domain.com</value>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.Address.Name">
+            <summary>
+            Gets and sets the name of the addressee.
+            </summary>
+            <value>The name of the addressee.  i.e. John Doe</value>
+            <remarks>This property is optional. If this value is specified, the recieving application may use it to display the addressee's name instead of or in addition to their e-mail address.</remarks>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.Recipient">
+            <summary>
+            Provides properties and methods for constructing an e-mail recipient.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.Recipient.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.Recipient">Recipient class</see>
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.Recipient.#ctor(System.String,System.String,Quiksoft.FreeSMTP.RecipientType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.Recipient">Recipient class</see> with an e-mail address, name and type. 
+            </summary>
+            <param name="Email">The e-mail address.  i.e. j.doe@domain.com</param>
+            <param name="Name">The name of the recipient.  i.e. John Doe</param>
+            <param name="Type">Type of recipient. Must be one of the <see cref="T:Quiksoft.FreeSMTP.RecipientType">RecipientType</see> values.</param>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.Recipient.Type">
+            <summary>
+            Gets or sets the e-mail address type of the recipient.
+            </summary>
+            <value>One of the <see cref="T:Quiksoft.FreeSMTP.RecipientType">RecipientType</see> values.  Default: RecipientType.To</value>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.RecipientCollection">
+            <summary>
+            Represents a collection of <see cref="T:Quiksoft.FreeSMTP.Recipient">Recipient</see> objects.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.RecipientCollection.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.RecipientCollection">RecipientCollection class</see>.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.RecipientCollection.Add(Quiksoft.FreeSMTP.Recipient)">
+            <summary>
+            Adds a recipient object to the collection.
+            </summary>
+            <param name="RecipientObj">A reference to the <see cref="T:Quiksoft.FreeSMTP.Recipient">Recipient</see> object to add to the collection.</param>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.RecipientCollection.Add(System.String)">
+            <summary>
+            Creates a <see cref="T:Quiksoft.FreeSMTP.Recipient">Recipient</see> object using specified values and adds it to the <see cref="T:Quiksoft.FreeSMTP.RecipientCollection">RecipientCollection</see>. 
+            </summary>
+            <param name="Email">The recipient's e-mail address.  i.e. j.doe@domain.com</param>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.RecipientCollection.Add(System.String,System.String)">
+            <summary>
+            Creates a <see cref="T:Quiksoft.FreeSMTP.Recipient">Recipient</see> object using specified values and adds it to the <see cref="T:Quiksoft.FreeSMTP.RecipientCollection">RecipientCollection</see>. 
+            </summary>
+            <param name="Email">The recipient's e-mail address.  i.e. j.doe@domain.com</param>
+            <param name="Name">The name of the recipient.  i.e. John Doe</param>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.RecipientCollection.Add(System.String,System.String,Quiksoft.FreeSMTP.RecipientType)">
+            <summary>
+            Creates a <see cref="T:Quiksoft.FreeSMTP.Recipient">Recipient</see> object using specified values and adds it to the <see cref="T:Quiksoft.FreeSMTP.RecipientCollection">RecipientCollection</see>. 
+            </summary>
+            <param name="Email">The recipient's e-mail address.  i.e. j.doe@domain.com</param>
+            <param name="Name">The name of the recipient.  i.e. John Doe</param>
+            <param name="Type">One of the <see cref="T:Quiksoft.FreeSMTP.RecipientType">RecipientType</see> values.</param>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.Attachment">
+            <summary>
+            Provides properties and methods for constructing an e-mail attachment.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.Attachment.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.Attachment">Attachment class</see>.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.Attachment.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.Attachment">Attachment class</see> with the attachment filename.
+            </summary>
+            <param name="Filename">Name of the file to attach</param>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.Attachment.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.Attachment">Attachment class</see> with the attachment filename and display name.
+            </summary>
+            <param name="Filename">Name of the file to attach</param>
+            <param name="DisplayName">Filename used to label the attachment in the e-mail message.  See the <see cref="P:Quiksoft.FreeSMTP.Attachment.DisplayName">DisplayName Property</see> for more information.</param>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.Attachment.Filename">
+            <summary>
+            Gets and sets the filename of the attachment.
+            </summary>
+            <value>The full path and filename of the attachment.</value>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.Attachment.DisplayName">
+            <summary>
+            Gets and sets the filename used to label the attachment in the e-mail message.  See remarks.
+            </summary>
+            <value>The filename used to label the attachment in the e-mail message.  See remarks.</value>
+            <remarks>The DisplayName property allows you to label the attachment in the e-mail message with a name that is different than the original filename.  This is useful if you are adding an attachment with a temporary file name such as 03230234.dat and want it to be labeled in the message by a more friendly name such as budget.xls.  If the DisplayName property is not specified, the attachment will be labeled in the message with its original filename.</remarks>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.AttachmentCollection">
+            <summary>
+            Represents a collection of <see cref="T:Quiksoft.FreeSMTP.Attachment">Attachment</see> objects.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.AttachmentCollection.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.AttachmentCollection">AttachmentCollection class</see>
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.AttachmentCollection.Add(Quiksoft.FreeSMTP.Attachment)">
+            <summary>
+            Adds an attachment object to the collection.
+            </summary>
+            <param name="AttachmentObj">Attachment object to add to the collection.</param>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.AttachmentCollection.Add(System.String)">
+            <summary>
+            Creates an <see cref="T:Quiksoft.FreeSMTP.BodyPart">Attachment</see> object using specified values and adds it to the <see cref="T:Quiksoft.FreeSMTP.AttachmentCollection">AttachmentCollection</see>. 
+            </summary>
+            <param name="Filename">The full path and filename of the attachment to add to the collection.</param>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.AttachmentCollection.Add(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:Quiksoft.FreeSMTP.BodyPart">Attachment</see> object using specified values and adds it to the <see cref="T:Quiksoft.FreeSMTP.AttachmentCollection">AttachmentCollection</see>. 
+            </summary>
+            <param name="Filename">The full path and filename of the attachment to add to the collection.</param>
+            <param name="DisplayName">Filename used to identify the attachment in the e-mail message.  See the <see cref="P:Quiksoft.FreeSMTP.Attachment.DisplayName">DisplayName Property</see> for more information.</param>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.CustomHeader">
+            <summary>
+            Provides properties and methods for adding a custom header to an e-mail message.
+            </summary>
+            <remarks>Custom headers can be used to specify additional information in the message, such as flags or instructions to be interprited by the receiving application.</remarks>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.CustomHeader.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.CustomHeader">CustomHeader class</see>
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.CustomHeader.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.CustomHeader">CustomHeader class</see> with a name and value.
+            </summary>
+            <param name="Name">Name of the header.</param>
+            <param name="Value">Value of the header.</param>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.CustomHeader.Name">
+            <summary>
+            Gets and sets the name of the header.
+            </summary>
+            <value>Name of the header.</value>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.CustomHeader.Value">
+            <summary>
+            Gets or sets the value of the header.
+            </summary>
+            <value>Value of the header.</value>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.CustomHeaderCollection">
+            <summary>
+            Represents a collection of <see cref="T:Quiksoft.FreeSMTP.CustomHeader">CustomHeader</see> objects.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.CustomHeaderCollection.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.CustomHeaderCollection">CustomHeaderCollection class</see>. 
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.CustomHeaderCollection.Add(Quiksoft.FreeSMTP.CustomHeader)">
+            <summary>
+            Adds a <see cref="T:Quiksoft.FreeSMTP.CustomHeader">CustomHeader</see> object to the <see cref="T:Quiksoft.FreeSMTP.CustomHeaderCollection">CustomHeaderCollection</see>. 
+            </summary>
+            <param name="CustomHeaderObj">A reference to the <see cref="T:Quiksoft.FreeSMTP.CustomHeader">CustomHeader</see> object to add to the collection.</param>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.CustomHeaderCollection.Add(System.String,System.String)">
+            <summary>
+             Creates a <see cref="T:Quiksoft.FreeSMTP.CustomHeader">CustomHeader</see> object using the specified values and adds it to the <see cref="T:Quiksoft.FreeSMTP.CustomHeaderCollection">CustomHeaderCollection</see>. 
+            </summary>
+            <param name="Name">Name of the header.</param>
+            <param name="Value">Value of the header.</param>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.BodyPart">
+            <summary>
+            Provides properties and methods for constructing a body part of an e-mail message.
+            </summary>
+            <remarks>The body text is the main body of the message.  The FreeSMTP.Net assembly supports a maximum of one plain text body part and one HTML body part.  The retail version of Quiksoft's SMTP .Net assembly supports an unlimited number of body parts.</remarks>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.BodyPart.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.BodyPart">BodyPart class</see> with a body.
+            </summary>
+            <param name="Body">The text of the body part.</param>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.BodyPart.#ctor(System.String,Quiksoft.FreeSMTP.BodyPartFormat)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.BodyPart">BodyPart class</see> with a body and its format.
+            </summary>
+            <param name="Body">The text of the body part</param>
+            <param name="Format">One of the <see cref="T:Quiksoft.FreeSMTP.BodyPartFormat">BodyPartFormat</see> values specifying the format of the body part</param>
+            <exception cref="T:System.ArgumentException">Thrown when an invalid value is specified.</exception> 
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.BodyPart.#ctor(System.String,Quiksoft.FreeSMTP.BodyPartFormat,Quiksoft.FreeSMTP.BodyPartEncoding)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Quiksoft.FreeSMTP.BodyPart">BodyPart class</see> with a body, its format and encoding.
+            </summary>
+            <param name="Body">The text of the body part</param>
+            <param name="Format">One of the <see cref="T:Quiksoft.FreeSMTP.BodyPartFormat">BodyPartFormat</see> values specifying the format of the body part</param>
+            <param name="Encoding">One of the <see cref="T:Quiksoft.FreeSMTP.BodyPartEncoding">BodyPartEncoding</see> values specifying the encoding method to use on the body part</param>
+            <exception cref="T:System.ArgumentException">Thrown when an invalid value is specified.</exception> 
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.BodyPart.#ctor">
+            <summary>
+            Initializes a new instance of the BodyPart class.
+            </summary>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.BodyPart.Body">
+            <summary>
+            Gets or sets the text of the body part. 
+            </summary>
+            <value>The text of the body part.</value>
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.BodyPart.Format">
+            <summary>
+            Gets or sets the format of the body part.
+            </summary>
+            <value>One of the <see cref="T:Quiksoft.FreeSMTP.BodyPartFormat">BodyPartFormat</see> values specifying the format of the body part.  Default: BodyPartFormat.Plain</value>
+            <exception cref="T:System.ArgumentException">Thrown when an invalid value is specified.</exception> 
+        </member>
+        <member name="P:Quiksoft.FreeSMTP.BodyPart.Encoding">
+            <summary>
+            Gets or sets the encoding method to use on the body part.
+            </summary>
+            <value>One of the <see cref="T:Quiksoft.FreeSMTP.BodyPartEncoding">BodyPartEncoding</see> values specifying the encoding method to use on the body part.  Default: BodyPartEncoding.QuotedPrintable</value>
+            <exception cref="T:System.ArgumentException">Thrown when an invalid value is specified.</exception>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.BodyPartFormat">
+            <summary>
+            Provides enumerated values for e-mail body format.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.FreeSMTP.BodyPartFormat.Plain">
+            <summary>
+            Specifies that the body part format is plain text.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.FreeSMTP.BodyPartFormat.HTML">
+            <summary>
+            Specifies that the body part format is HTML.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.BodyPartEncoding">
+            <summary>
+            Provides enumerated values for e-mail body encoding.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.FreeSMTP.BodyPartEncoding.None">
+            <summary>
+            Specifies that no encoding is to be used on the body part.
+            </summary>
+        </member>
+        <member name="F:Quiksoft.FreeSMTP.BodyPartEncoding.QuotedPrintable">
+            <summary>
+            Specifies that Quoted-Printable encoding is to be used on the body part.
+            </summary>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.BodyPartCollection">
+            <summary>
+            Represents a collection of the BodyParts that are transmitted with the message.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.BodyPartCollection.#ctor">
+            <summary>
+            Initializes a new instance of the BodyPartCollection class.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.BodyPartCollection.Add(System.String)">
+            <summary>
+            Creates a <see cref="T:Quiksoft.FreeSMTP.BodyPart">BodyPart</see> object using specified values and adds it to the <see cref="T:Quiksoft.FreeSMTP.BodyPartCollection">BodyPartCollection</see>. 
+            </summary>
+            <remarks>The FreeSMTP.Net assembly supports a maximum of one plain text body part and one HTML body part.  The retail version of Quiksoft's SMTP .Net assembly supports an unlimited number of body parts.</remarks>
+            <param name="Body">The text of the body part.</param>
+            <exception cref="T:Quiksoft.FreeSMTP.LimitationException">Thrown when a duplicate body part format is detected.  See remarks.</exception>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.BodyPartCollection.Add(System.String,Quiksoft.FreeSMTP.BodyPartFormat)">
+            <summary>
+            Creates a <see cref="T:Quiksoft.FreeSMTP.BodyPart">BodyPart</see> object using specified values and adds it to the <see cref="T:Quiksoft.FreeSMTP.BodyPartCollection">BodyPartCollection</see>. 
+            </summary>
+            <remarks>The FreeSMTP.Net assembly supports a maximum of one plain text body part and one HTML body part.  The retail version of Quiksoft's SMTP .Net assembly supports an unlimited number of body parts.</remarks>
+            <param name="Body">The text of the body part.</param>
+            <param name="Format">One of the <see cref="T:Quiksoft.FreeSMTP.BodyPartFormat">BodyPartFormat</see> values specifying the format of the body part.</param>
+            <exception cref="T:Quiksoft.FreeSMTP.LimitationException">Thrown when a duplicate body part format is detected.  See remarks.</exception>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.BodyPartCollection.Add(System.String,Quiksoft.FreeSMTP.BodyPartFormat,Quiksoft.FreeSMTP.BodyPartEncoding)">
+            <summary>
+            Creates a <see cref="T:Quiksoft.FreeSMTP.BodyPart">BodyPart</see> object using specified values and adds it to the <see cref="T:Quiksoft.FreeSMTP.BodyPartCollection">BodyPartCollection</see>. 
+            </summary>
+            <remarks>The FreeSMTP.Net assembly supports a maximum of one plain text body part and one HTML body part.  The retail version of Quiksoft's SMTP .Net assembly supports an unlimited number of body parts.</remarks>
+            <param name="Body">The text of the body part.</param>
+            <param name="Format">One of the <see cref="T:Quiksoft.FreeSMTP.BodyPartFormat">BodyPartFormat</see> values specifying the format of the body part.</param>
+            <param name="Encoding">ne of the <see cref="T:Quiksoft.FreeSMTP.BodyPartEncoding">BodyPartEncoding</see> values specifying the encoding method to use on the body part.</param>
+            <exception cref="T:Quiksoft.FreeSMTP.LimitationException">Thrown when a duplicate body part format is detected.  See remarks.</exception>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.BodyPartCollection.Add(Quiksoft.FreeSMTP.BodyPart)">
+            <summary>
+            Adds a <see cref="T:Quiksoft.FreeSMTP.BodyPart">BodyPart</see> object to the <see cref="T:Quiksoft.FreeSMTP.BodyPartCollection">BodyPartCollection</see>.
+            </summary>
+            <remarks>The FreeSMTP.Net assembly supports a maximum of one plain text body part and one HTML body part.  The retail version of Quiksoft's SMTP .Net assembly supports an unlimited number of body parts.</remarks>
+            <param name="BodyPartObj">A reference to the <see cref="T:Quiksoft.FreeSMTP.BodyPart">BodyPart</see> object to add to the collection.</param>
+            <exception cref="T:Quiksoft.FreeSMTP.LimitationException">Thrown when a duplicate body part format is detected.  See remarks.</exception>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.SMTPProtocolException">
+            <summary>
+            The exception that is thrown when a protocol error is returned from the SMTP server.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.SMTPProtocolException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the SMTPProtocolException class with a specified error message.
+            </summary>
+            <param name="Description">The error message string.</param>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.SMTPProtocolException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the SMTPProtocolException class with a specified error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="Description">The error message string.</param>
+            <param name="Inner">The inner exception reference.</param>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.SMTPConnectionException">
+            <summary>
+            The exception that is thrown when there is a socket connection error.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.SMTPConnectionException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the FreeSMTPConnectionException class with a specified error message.
+            </summary>
+            <param name="Description">The error message string.</param>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.SMTPConnectionException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the FreeSMTPConnectionException class with a specified error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="Description">The error message string.</param>
+            <param name="Inner">The inner exception reference.</param>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.FileIOException">
+             <summary>
+            The exception that is thrown when there is an error related to the file system.
+             </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.FileIOException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the SMTPFileIOException class with a specified error message.
+            </summary>
+            <param name="Description">The error message string.</param>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.FileIOException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the SMTPFileIOException class with a specified error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="Description">The error message string.</param>
+            <param name="Inner">The inner exception reference.</param>
+        </member>
+        <member name="T:Quiksoft.FreeSMTP.LimitationException">
+            <summary>
+            The exception that is thrown when an invalid or unsupported option is used.
+            </summary>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.LimitationException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the SMTPFileIOException class with a specified error message.
+            </summary>
+            <param name="Description">The error message string.</param>
+        </member>
+        <member name="M:Quiksoft.FreeSMTP.LimitationException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the LimitationException class with a specified error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="Description">The error message string.</param>
+            <param name="Inner">The inner exception reference.</param>
+        </member>
+        <member name="T:Quiksoft.EasyMail.Internal.ValidateL">
+            <summary>
+            Summary description for ValidateL.
+            </summary>
+        </member>
+    </members>
+</doc>

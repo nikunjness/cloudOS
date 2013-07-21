@@ -1,0 +1,251 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="main.master.cs" Inherits="main" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<link href="menu/style.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href=".css"/>
+
+<script type="text/javascript" src="Header/jquery-1.3.1.min.js"></script>
+
+
+
+<script type="text/javascript">
+	
+ // speed in milliseconds
+
+var scrollSpeed = 70;
+
+// set the default position
+
+var current = 0;
+
+
+// set the direction
+
+var direction = 'h';
+
+
+function bgscroll()
+{
+// 1 pixel row at a time
+
+current -= 1;
+ 
+// move the background with backgrond-position css properties
+
+$('td.clouds').css("backgroundPosition", (direction == 'h') ? current+"px 0" : "0 " + current+"px");
+   
+}
+
+
+//Calls the scrolling function repeatedly
+
+setInterval("bgscroll()", scrollSpeed);
+</script>
+<style type="text/css">
+ body
+{
+	margin:0;
+    padding:0;
+}
+.clouds {background:#9BCDFF url(Header/bg_clouds.png) repeat-x 0 bottom; width:300px; height:150px;}
+a.links
+    {
+    	font-family:Meiryo;
+    	font-size:18px;  
+    	font-weight:bold;  
+    	text-decoration:none; 
+    	text-align:center;  
+    }
+    a.links:link {
+        color: #666666;
+    }
+    a.links:visited {
+        color: #666666;
+    }
+    a.links:active {
+        color: #666666;
+    }
+    a.links:hover
+    {
+    	color:Green;       
+    } 
+   
+    #header
+    {
+       	text-align:left;
+    }    
+    .links
+    {
+       	text-align:center;
+    }
+    .border
+    {
+       	height:2px;
+       	width:100%;
+       	color:White;
+    }    
+    .end
+    {
+      	background-image:url('photos/blue2.jpg');        
+    }
+    .title
+    {
+	    font-family:Harlow Solid Italic;
+	    text-align:center;
+	    font-size:x-large;
+    }
+    .lk
+    {
+    	text-align:center;
+    }
+    #cpanel
+    {
+    	width: 93px;
+        height: 18px;
+    }
+    #cntrl
+    {
+    	text-decoration:none;
+    	color:#54A5F6;
+    }
+    	
+    .style1
+    {
+        text-align: center;
+        height: 36px;
+    }
+    	
+    .style2
+    {
+        text-align: center;
+        height: 37px;
+    }
+    	
+    .style3
+    {
+        text-align: center;
+        height: 33px;
+    }
+    	
+</style>
+
+
+    <title>CloudOS-The Web OS</title>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+   
+</head>
+<body>
+    <form id="form1" runat="server">
+     <table border="0" cellpadding="0" cellspacing="0" width="99.9%" 
+         style="height: 447px">
+        <tr>
+            <td class="clouds">
+            		<ul id="menu">
+			<li class="links" id="home"><a href="home.aspx"><b>Home</b></a></li>
+			<li class="links"  id="about"><a href="about.aspx"><b>About</b></a></li>
+			<li class="links"  id="Free Accounts"><a href="freeacc.aspx"><b>Free Accounts</b></a></li>
+			<li class="links"  id="Application"><a href="freeapps.aspx"><b>Applications</b></a></li>
+			<li class="links"  id="Features"><a href="features.aspx"><b>Features</b></a></li>
+			<li class="links"  id="Screenshots"><a href="screenshot.aspx"><b>Screenshots</b></a></li>
+			<li class="links"  id="Forum"><a href="tryit.aspx"><b>Try cloudOS</b></a></li>			
+		</ul>
+                <asp:Image ID="Image1" runat="server" Height="105px" 
+                    ImageUrl="~/photos/main.png"  />
+            </td>
+        </tr>
+        <tr>
+            <td>
+    
+        
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+                 </td>
+        </tr>
+        
+        <tr class="end">
+            <td align="center">
+            <asp:Panel ID="Panel1" runat="server" Height="273px">
+                <table style="width:100%; height: 243px;">
+                    <tr>
+                        <td class="title" colspan="4">
+                            <hr class="border" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="title">
+                            cloudos</td>
+                        <td class="title">
+                            Features</td>
+                        <td class="title">
+                            news</td>
+                        <td class="title">
+                            Help</td>
+                    </tr>
+                    <tr>
+                        <td class="style3">
+                            <a href="home.aspx" class="links">Home</a></td>
+                        <td class="style3">
+                            <a href="features.aspx" class="links">Web Desktop</a></td>
+                        <td class="style3">
+                            <a href="DEV.aspx" class="links">cloudOS Developer</a></td>
+                        <td class="style3">
+                            <a href="recovery.aspx" class="links">Forgot your password?</a></td>
+                    </tr>
+                    <tr>
+                        <td class="style2">
+                            <a href="signin.aspx" class="links">Login</a></td>
+                            
+                        <td class="style2">
+                            <a href="features.aspx" class="links"> Access your files globally</a></td>
+                        <td class="lk">
+                           <a href="https://twitter.com/#!/CloudOS_WebDesk" target="_blank">
+                            <img alt="Twitter" src="photos/twitter.png"style="height:30px"/></a>
+                        </td>
+                        <td class="style2">
+                            <a href="support.aspx" class="links">Support</a></td>
+                    </tr>
+                    <tr>
+                        <td class="lk">
+                           <a href="signup.aspx" class="links">Sign Up</a></td>
+                        <td class="lk">
+                            <a href="features.aspx" class="links">No plugin required</a></td>
+                        <td class="lk">
+                          <a style="text-decoration:none" href="http://www.facebook.com/pages/CloudOS-The-Web-Desktop/274987205914590" target="_blank">
+                            <img alt="FaceBook" src="photos/fb.png" style="height: 30px" /></a></td>
+                        <td class="lk">
+                            <a style="text-decoration:none" href="policy.aspx" class="links">Privacy Policy</a></td>
+                    </tr>
+                    <tr>
+                        <td class="style1">
+                            <a class="links" href="about.aspx">Get to know cloudOS</a></td>
+                        <td class="style1">
+                            <a class="links" href="features.aspx">store and manage your files</a></td>
+                        <td class="lk">
+                            &nbsp;</td>
+                        <td class="style1">
+                            <a class="links" href="sitemap.aspx">Sitemap</a></td>
+                    </tr>
+                    <tr>
+                        <td class="lk">
+                            <a class="links" href="getbored.aspx" target="_blank">Getting Bored?</a></td>
+                        <td class="lk">
+                            &nbsp;</td>
+                        <td class="lk">
+                             </td>
+                        <td align="right">
+                            <div id="cpanel"><a id="cntrl" href="adlogin.aspx">Control Panel</a></div></td>
+                    </tr>
+                </table>
+            </asp:Panel>
+                 </td>
+        </tr>
+        </table>    
+        
+    </form>
+</body>
+</html>

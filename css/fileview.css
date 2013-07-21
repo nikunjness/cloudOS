@@ -1,0 +1,100 @@
+﻿body
+{
+    font-family: Trebuchet MS, Lucida Sans Unicode, Arial, sans-serif;
+    margin-left: 0px;
+    
+}
+#Menu
+{
+    /* The menu container */
+    border:ridge 1px black;    /* Border around the entire menu */
+    background-color:#dfdfdf; /* White background color of the menu */
+    margin: 0px;
+    padding: 0px;
+    width: 60; /* Width of context menu */            
+    display: none;
+    position: absolute;
+    -moz-box-shadow: 5px 5px 5px #888;
+    -webkit-box-shadow: 5px 5px 5px #888;
+}
+#Menu li
+{
+    /* Each menu item */
+    list-style-type: none;            
+    cursor: pointer;
+    clear: both;
+}
+#Menu li div
+{
+    /* Dynamically created divs */
+    cursor: pointer;
+}
+#Menu li:hover
+{         
+    background: rgb(155, 205, 255);	
+	background: rgba(155, 205, 255, 0.6);    
+	border-style: outset;
+}       
+.link
+{
+	text-decoration:none;
+	font-family:Arial;
+	font-size:14px;
+    color:Black;
+}
+.link:hover
+{
+	cursor:default;
+}
+.btn
+{
+	width:80px;
+	height:25px;
+}
+.grid
+{
+	position:relative;
+	margin-top:0px;
+	padding-top:0px;
+        top: -245px;
+        left: 158px;
+        width: 85%;
+        
+}
+.style1
+{
+    height: 36px;
+}
+.ifrm
+{
+	background-color:#dfdfdf;
+	overflow:visible;
+}  
+
+#popup
+{
+	background-color:#ffffff;
+	color: black;           
+    display:none;
+    width:150px;
+    margin:0px;
+    padding:0px;
+    -moz-box-shadow: 5px 5px 5px #888;
+    -webkit-box-shadow: 5px 5px 5px #888;
+    position:absolute;
+        top: 16px;
+        left: 62px;
+}
+#popup li
+{
+    /* Each menu item */
+    list-style-type: none;            
+    cursor: pointer;
+    clear: both;
+}
+#popup li:hover
+{         
+    background: rgb(134, 153, 173);	
+	background: rgba(134, 153, 173, 0.6);    
+	
+}       

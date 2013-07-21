@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>Login form</title>
+
+<style type="text/css">
+
+body
+{
+	font-size: 100%;
+
+	font-family: "Trebuchet MS",Verdana, Arial, Helvetica, sans-serif;
+	padding-top: 100px;
+
+}
+label { display: block; margin-top: 10px; }
+#login
+{
+	width: 300px;
+	margin: 0 auto;
+	border: 1px solid #eee;
+	padding: 25px;
+	background-color: #FFFFCC;
+	position: relative; left: 1px; top: -1px;
+}
+
+#errormsg
+{
+
+	color: #990000; font-weight: bold;
+
+}
+
+
+</style>
+
+
+<script type="text/javascript" src="jquery-1.3.2.min.js">
+</script>
+
+<script type="text/javascript" src="vibrate.js">
+</script>
+
+
+</head>
+
+
+<body>
+
+
+<div id="login">
+
+<h3>Buzzing Login form</h3>
+
+<form action="" method="post" id="loginform">
+
+<label for="username">Username:</label>
+
+<input type="text" name="username" id="username" />
+		
+		
+<label for="pwd">Password:</label>
+<input type="password" name="pwd" id="pwd" />
+		
+	
+<input type="button" name="Submit" id="submit_butt" value="Submit" />
+
+</form>
+</div>
+
+
+<script type="text/javascript">
+
+
+$(document).ready(function()
+{
+
+
+	$("#submit_butt").click( function()
+	{
+		
+	// configurations for the buzzing effect. Be careful not to make it too annoying!
+			var conf = {
+frequency: 5000,spread: 5,duration: 600};
+		
+			/* do your AJAX call and processing here
+		...
+
+		
+....
+		
+		....
+			*/
+
+		// this is the call we make when the AJAX callback function indicates a login failure 
+			$("#login").vibrate(conf);
+
+		
+// let's also display a notification
+		if($("#errormsg").text() == "")
+				$("#loginform").append('<p id="errormsg">Invalid username or password!</p>');
+			
+		//clear the fields to discourage brute forcing :)
+		
+				$("#username").val("");
+
+		$("#pwd").val("");
+
+	});
+
+
+});
+
+
+
+</script>
+
+
+</body>
+</html>

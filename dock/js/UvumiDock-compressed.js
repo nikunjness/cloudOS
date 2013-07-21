@@ -1,0 +1,28 @@
+/*
+UvumiTools Dock Menu v1.0.0 http://uvumi.com/tools/dock.html
+
+Copyright (c) 2008 Uvumi LLC
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+var UvumiDock=new Class({Implements:Options,options:{position:'bottom',captionClassName:'dock-caption',minHeight:64,maxHeight:128,openDuration:'normal',hiddenOpacity:0.5,IEfixer:"css/blank.gif"},initialize:function(a,b){this.el=a;this.setOptions(b);this.margin=(this.options.minHeight/2).toInt();window.addEvents({'domready':this.domReady.bind(this),'resize':this.updateSize.bind(this)})},domReady:function(){this.el=$(this.el);if(this.el.get('tag')!='ul'){window.removeEvents('resize');return false}this.el.setStyles({display:'inline',textAlign:'center'});this.lis=$$(this.el.getElements('li'));this.lis.setStyles({display:'inline',listStyle:'none'});this.images=$$(this.el.getElements('img'));this.images.setStyles({border:0,height:this.options.minHeight});this.captions=[];this.images.each(function(a){var b=new Element('span',{html:a.getProperty('alt'),'class':this.options.captionClassName,styles:{position:'absolute',top:-10,left:0,opacity:0},tween:{link:'cancel'}}).inject(a.getParent('li'));a.store('caption',b);this.captions.push(b)},this);this.images.addEvents({mouseenter:this.showCaption,mouseleave:this.hideCaption});this.dock=new Element('div',{styles:{textAlign:'center',opacity:this.options.hiddenOpacity},events:{mousemove:this.fishEye.bind(this),mouseenter:this.open.bind(this),mouseleave:this.close.bind(this)}});this.animFx=new Fx.Elements($$(this.dock,this.images),{duration:this.options.openDuration,link:'cancel'});if(Browser.Engine.trident){var c=$$('body')[0];if(Browser.Engine.trident4){var d=c.getStyles('padding','margin','backgroundColor','backgroundImage','backgroundRepeat');var e=c.currentStyle.backgroundPositionX;var f=c.currentStyle.backgroundPositionY;c.setStyles({overflow:'hidden',margin:0,padding:0,height:'100%'});var g=d.padding.split(" ");var h=d.margin.split(" ");wrapperStyle={paddingLeft:g[3].toInt()+h[3].toInt(),paddingRight:g[1].toInt()+h[1].toInt(),background:d.backgroundColor+" "+d.backgroundImage+" "+d.backgroundRepeat+" "+f+" "+e,position:'relative',height:'100%',overflow:'auto'};var i=c.getChildren();var j=new Element('div',{styles:wrapperStyle}).adopt(i).inject(c);this.dock.inject(c).setStyles({position:'absolute',backgroundImage:'url('+this.options.IEfixer+')'}).adopt(this.el);this.dock.setStyle('position','absolute')}else{this.dock.setStyle('position','fixed')}this.dock.inject(c).setStyle('backgroundImage','url('+this.options.IEfixer+')').adopt(this.el);this.images.each(function(a){a.setStyle('filter','progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\''+a.getProperty("src")+'\', sizingMethod=\'scale\')');a.setProperty("src",this.options.IEfixer)},this)}else{this.dock.inject(document.body).setStyle('position','fixed').adopt(this.el)}this.size=this.dock.getSize();this.updatePosition()},open:function(){var a={0:{opacity:1}};a[0][this.animationParam]=0;this.animFx.start(a)},close:function(){var a={0:{opacity:this.options.hiddenOpacity}};a[0][this.animationParam]=-this.size.y+this.margin;for(var i=1;i<=this.images.length;i++){a[i]={height:this.options.minHeight}}this.animFx.start(a)},updatePosition:function(){switch(this.options.position){case'top':var a={top:-this.size.y+this.margin,left:0,width:'100%'};this.animationParam='top';if(!Browser.Engine.gecko){this.lis.setStyle('verticalAlign','top')}$$(this.captions).setStyles({top:"",bottom:-10});break;case'bottom':var a={bottom:-this.size.y+this.margin,left:0,width:'100%'};this.animationParam='bottom';$$(this.captions).setStyles({top:-10,bottom:""});break}this.dock.setStyles(a)},updateSize:function(){this.size=this.dock.getSize();this.el.fireEvent('mouseleave')},fishEye:function(e){this.images.each(function(a){cos=(a.getPosition().x+a.getSize().x/2-e.client.x)/this.options.maxHeight;cos=Math.max(Math.min(cos,Math.PI/2),-Math.PI/2);a.setStyle('height',(Math.max((this.options.maxHeight*Math.cos(cos)),this.options.minHeight)).toInt());a.retrieve('caption').setStyle('left',e.client.x-15)},this)},showCaption:function(){this.retrieve('caption').get('tween').start('opacity',1)},hideCaption:function(){this.retrieve('caption').get('tween').start('opacity',0)}});Element.implement({getPosition:function(a){if(isBody(this))return{x:0,y:0};var b=this.getOffsets(),scroll=this.getScrolls();var c={x:b.x-scroll.x,y:b.y-scroll.y};var d=(a&&(a=$(a)))?a.getPosition():{x:0,y:0};if(Browser.Engine.presto925){var c={x:b.x,y:b.y}}return{x:c.x-d.x,y:c.y-d.y}}});function isBody(a){return(/^(?:body|html)$/i).test(a.tagName)};
